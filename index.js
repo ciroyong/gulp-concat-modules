@@ -24,14 +24,15 @@ module.exports = function(opt) {
     concats = {};
     firstFiles = {};
 
-    _concat = function(file, name, cb) {
+    _concat = function(file, name) {
         if (file.sourceMap) {
             isUsingSourceMaps = true;
         }
 
         if (!concats.hasOwnProperty(name)) {
             concats[name] = new concat(isUsingSourceMaps, name, opt.newLine);
-            firstFiles[name] = new gulpUtil.File(file);
+            firstFiles[name] = file.clone({contents: false});
+            firstFiles[name].path = path.join(file.base, name);
         }
 
         concats[name].add(file.relative, file.contents, file.sourceMap);
@@ -39,7 +40,7 @@ module.exports = function(opt) {
 
     _createFile = function(name, concat) {
         var file;
-        
+
         file = firstFiles[name];
         file.contents = concat.content;
         
@@ -47,11 +48,12 @@ module.exports = function(opt) {
             file.sourceMap = JSON.parse(concat.sourceMap);
         }
 
+
         return file;
     }
 
-    write = function(file, enc, cb) {
-        var name, pattern;
+    return through.obj(function(file, enc, cb) {
+        var pattern;
         // ignore empty files
         if (file.isNull()) {
             cb();
@@ -65,19 +67,18 @@ module.exports = function(opt) {
             return;
         }
 
-        for(name in opt.patterns) {
+        for(var name in opt.patterns) {
             pattern = opt.patterns[name];
-            console.log("path matched: %o", file.relative);
             if(typeof pattern === "string") {
                 if(minimatch(file.relative, pattern)){
-                    _concat(file, name, cb);
+                    _concat(file, name);
                 }
             }
 
             if (pattern instanceof Array) {
                 for(var i=0; i< pattern.length; i++) {
-                    if(minimatch(file.path, pattern)) {
-                        _concat(file, name, cb);
+                    if(minimatch(file.relative, pattern[i])) {
+                        _concat(file, name);
                         break;
                     }
                 }
@@ -85,15 +86,11 @@ module.exports = function(opt) {
         }
 
         cb();
-    }
-
-    function end(cb) {
+    }, function end(cb) {
         for(var name in concats) {
             this.push(_createFile(name, concats[name]));
         }
 
         cb();
-    }
-
-    return through.obj(write, end);
+    });
 };
