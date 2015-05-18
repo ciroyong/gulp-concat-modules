@@ -22,6 +22,7 @@ module.exports = function(opt) {
 
     isUsingSourceMaps = false;
     concats = {};
+    firstFiles = {};
 
     _concat = function(file, name, cb) {
         if (file.sourceMap) {
@@ -30,10 +31,22 @@ module.exports = function(opt) {
 
         if (!concats.hasOwnProperty(name)) {
             concats[name] = new concat(isUsingSourceMaps, name, opt.newLine);
+            firstFiles[name] = new gulpUtil.File(file);
         }
 
         concats[name].add(file.relative, file.contents, file.sourceMap);
         cb();
+    }
+
+    _createFile = function(name, concat) {
+        file = firstFiles[name];
+        file.contents = concat.content;
+        
+        if (concat.sourceMapping) {
+            file.sourceMap = JSON.parse(concat.sourceMap);
+        }
+
+        return file;
     }
 
     write = function(file, enc, cb) {
@@ -59,7 +72,7 @@ module.exports = function(opt) {
                 }
             }
 
-            if (pattern instanceof Array) {
+            if (var pattern instanceof Array) {
                 for(var i=0; i< pattern.length; i++) {
                     if minimatch(file.path, pattern) {
                         _concat(file, name, cb);
@@ -71,6 +84,11 @@ module.exports = function(opt) {
     }
 
     function end(cb) {
+        for(var concat in concats) {
+            this.push(_createFile(name, concat));
+        }
+
+        cb();
     }
 
     return through.obj(write, end);
