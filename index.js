@@ -35,10 +35,11 @@ module.exports = function(opt) {
         }
 
         concats[name].add(file.relative, file.contents, file.sourceMap);
-        cb();
     }
 
     _createFile = function(name, concat) {
+        var file;
+        
         file = firstFiles[name];
         file.contents = concat.content;
         
@@ -50,6 +51,7 @@ module.exports = function(opt) {
     }
 
     write = function(file, enc, cb) {
+        var name, pattern;
         // ignore empty files
         if (file.isNull()) {
             cb();
@@ -64,10 +66,10 @@ module.exports = function(opt) {
         }
 
         for(name in opt.patterns) {
-            pattern = opt.patterns[name]
-
+            pattern = opt.patterns[name];
+            console.log("path matched: %o", file.relative);
             if(typeof pattern === "string") {
-                if(minimatch(file.path, pattern)){
+                if(minimatch(file.relative, pattern)){
                     _concat(file, name, cb);
                 }
             }
@@ -81,11 +83,13 @@ module.exports = function(opt) {
                 }
             }
         }
+
+        cb();
     }
 
     function end(cb) {
-        for(var concat in concats) {
-            this.push(_createFile(name, concat));
+        for(var name in concats) {
+            this.push(_createFile(name, concats[name]));
         }
 
         cb();
