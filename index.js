@@ -7,17 +7,17 @@ minimatch = require('minimatch');
 path = require('path');
 gulpUtil = require('gulp-util');
 concat = require('concat-with-sourcemaps');
-PluginError = gutil.PluginError;
+PluginError = gulpUtil.PluginError;
 
 module.exports = function(opt) {
-    var isUsingSourceMaps, concats, write, end;
+    var isUsingSourceMaps, concats, write, end, firstFiles, _concat, _createFile;
 
     if (!opt) {
         throw new PluginError('gulp-concat-cc', 'Missing options');
     }
 
     if (typeof opt.newLine !== 'string') {
-        opt.newLine = gutil.linefeed;
+        opt.newLine = gulpUtil.linefeed;
     }
 
     isUsingSourceMaps = false;
@@ -67,14 +67,14 @@ module.exports = function(opt) {
             pattern = opt.patterns[name]
 
             if(typeof pattern === "string") {
-                if minimatch(file.path, pattern) {
+                if(minimatch(file.path, pattern)){
                     _concat(file, name, cb);
                 }
             }
 
-            if (var pattern instanceof Array) {
+            if (pattern instanceof Array) {
                 for(var i=0; i< pattern.length; i++) {
-                    if minimatch(file.path, pattern) {
+                    if(minimatch(file.path, pattern)) {
                         _concat(file, name, cb);
                         break;
                     }
