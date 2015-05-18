@@ -71,35 +71,7 @@ module.exports = function(opt) {
     }
 
     function end(cb) {
-        console.log(+new Date());
-        // no files passed in, no file goes out
-        if (!firstFile || !concat) {
-            cb();
-            return;
-        }
-
-        var joinedFile;
-
-        // if file opt was a file path
-        // clone everything from the first file
-        if (typeof file === 'string') {
-            joinedFile = firstFile.clone({
-                contents: false
-            });
-            joinedFile.path = path.join(firstFile.base, file);
-        } else {
-            joinedFile = firstFile;
-        }
-
-        joinedFile.contents = concat.content;
-
-        if (concat.sourceMapping) {
-            joinedFile.sourceMap = JSON.parse(concat.sourceMap);
-        }
-
-        this.push(joinedFile);
-        cb();
     }
 
-    return through.obj(bufferContents, endStream);
+    return through.obj(write, end);
 };
