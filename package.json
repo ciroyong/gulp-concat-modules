@@ -1,0 +1,42 @@
+{
+  "name": "gulp-concat-cc",
+  "description": "Concatenates files condationally",
+  "version": "0.0.1",
+  "repository": "ciroyong/gulp-concat-cc",
+  "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulpplugin"
+  ],
+  "dependencies": {
+    "concat-with-sourcemaps": "^1.0.0",
+    "gulp-util": "^3.0.1",
+    "through2": "^0.6.3",
+    "minimatch": "~2.0.7"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-sourcemaps": "^1.1.4",
+    "istanbul": "^0.3.2",
+    "mocha": "^2.0.1",
+    "mocha-lcov-reporter": "0.0.1",
+    "should": "^5.0.0",
+    "stream-array": "^1.0.1",
+    "stream-assert": "^2.0.1"
+  },
+  "scripts": {
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/ciroyong/gulp-concat-cc/raw/master/LICENSE"
+    }
+  ]
+}
