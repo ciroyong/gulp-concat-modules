@@ -10,8 +10,8 @@ gulp.task('scripts', function() {
   return gulp.src('src/js/**')
     .pipe(concatCc({
 		patterns:{
-			"controllers.js": ["controller/**"],
-			""
+			"controllers.js": "controller/*",
+			"widgets.js": ["widget/*", "lib/jqueryui/ui/*.js"]
 		}
     }))
     .pipe(gulp.dest('dist/js'));
