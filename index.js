@@ -1,23 +1,23 @@
 'use strict';
 
-var through, minimatch, path, gulpUtil, concat, PluginError;
+var through, minimatch, path, gutil, concat, PluginError;
 
 through = require('through2');
 minimatch = require('minimatch');
 path = require('path');
-gulpUtil = require('gulp-util');
+gutil = require('gulp-util');
 concat = require('concat-with-sourcemaps');
-PluginError = gulpUtil.PluginError;
+PluginError = gutil.PluginError;
 
 module.exports = function(opt) {
     var isUsingSourceMaps, concats, write, end, firstFiles, _concat, _createFile;
 
     if (!opt) {
-        throw new PluginError('gulp-concat-cc', 'Missing options');
+        throw new PluginError('gulp-concat-modules', 'Missing options');
     }
 
     if (typeof opt.newLine !== 'string') {
-        opt.newLine = gulpUtil.linefeed;
+        opt.newLine = gutil.linefeed;
     }
 
     isUsingSourceMaps = false;
@@ -53,7 +53,7 @@ module.exports = function(opt) {
     }
 
     return through.obj(function(file, enc, cb) {
-        var pattern;
+        var src;
         // ignore empty files
         if (file.isNull()) {
             cb();
@@ -62,23 +62,23 @@ module.exports = function(opt) {
 
         // we dont do streams (yet)
         if (file.isStream()) {
-            this.emit('error', new PluginError('gulp-concat-cc', 'Streaming not supported'));
+            this.emit('error', new PluginError('gulp-concat-modules', 'Streaming not supported'));
             cb();
             return;
         }
 
-        for(var name in opt.patterns) {
-            pattern = opt.patterns[name];
-            if(typeof pattern === "string") {
-                if(minimatch(file.relative, pattern)){
-                    _concat(file, name);
+        for(var relative in opt.modules) {
+            src = opt.modules[relative];
+            if(typeof src === "string") {
+                if(minimatch(file.relative, src)){
+                    _concat(file, relative);
                 }
             }
 
-            if (pattern instanceof Array) {
-                for(var i=0; i< pattern.length; i++) {
-                    if(minimatch(file.relative, pattern[i])) {
-                        _concat(file, name);
+            if (src instanceof Array) {
+                for(var i=0; i< src.length; i++) {
+                    if(minimatch(file.relative, src[i])) {
+                        _concat(file, relative);
                         break;
                     }
                 }
