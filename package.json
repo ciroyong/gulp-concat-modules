@@ -1,7 +1,7 @@
 {
   "name": "gulp-concat-cc",
   "description": "Concatenates files condationally",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "repository": "ciroyong/gulp-concat-cc",
   "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
   "files": [
