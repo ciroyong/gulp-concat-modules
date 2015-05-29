@@ -1,10 +1,10 @@
-# gulp-concat-cc
+# gulp-concat-modules
 Concatenates files according to pattern rules.
 
 ## Usage
 
 ```js
-var concatCc = require('gulp-concat-cc');
+var concatCc = require('gulp-concat-modules');
 
 gulp.task('scripts', function() {
   return gulp.src('src/js/**')
