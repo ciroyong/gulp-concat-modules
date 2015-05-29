@@ -1,8 +1,8 @@
 {
-  "name": "gulp-concat-cc",
+  "name": "gulp-concat-modules",
   "description": "Concatenates files condationally",
-  "version": "0.0.3",
-  "repository": "ciroyong/gulp-concat-cc",
+  "version": "0.0.4",
+  "repository": "ciroyong/gulp-concat-modules",
   "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
   "files": [
     "index.js"
@@ -36,7 +36,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/ciroyong/gulp-concat-cc/raw/master/LICENSE"
+      "url": "http://github.com/ciroyong/gulp-concat-modules/raw/master/LICENSE"
     }
   ]
 }
