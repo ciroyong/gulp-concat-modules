@@ -4,11 +4,11 @@ Concatenates files according to pattern rules.
 ## Usage
 
 ```js
-var concatCc = require('gulp-concat-modules');
+var concatModules = require('gulp-concat-modules');
 
 gulp.task('scripts', function() {
   return gulp.src('src/js/**')
-    .pipe(concatCc({
+    .pipe(concatModules({
 		patterns:{
 			"controllers.js": "controller/*",
 			"widgets.js": ["widget/*", "lib/jqueryui/ui/*.js"]
