@@ -11,10 +11,10 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "concat-with-sourcemaps": "^1.0.0",
-    "gulp-util": "^3.0.1",
-    "through2": "^0.6.3",
-    "minimatch": "~2.0.7"
+    "concat-with-sourcemaps": "latest",
+    "gulp-util": "latest",
+    "through2": "latest",
+    "minimatch": "latest"
   },
   "devDependencies": {
     "gulp": "^3.8.7",
