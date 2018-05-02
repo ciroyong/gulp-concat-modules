@@ -1,23 +1,22 @@
 'use strict';
 
-var through, minimatch, path, gutil, concat, PluginError;
+var through, minimatch, path, concat, PluginError;
 
 through = require('through2');
 minimatch = require('minimatch');
 path = require('path');
-gutil = require('gulp-util');
 concat = require('concat-with-sourcemaps');
-PluginError = gutil.PluginError;
+PluginError = require('plugin-error');
 
 module.exports = function(opt) {
     var isUsingSourceMaps, concats, write, end, firstFiles, _concat, _createFile;
 
     if (!opt) {
-        throw new PluginError('gulp-concat-modules', 'Missing options');
+        throw new PluginError('gulp-concat-modules', {message:'Missing options'});
     }
 
     if (typeof opt.newLine !== 'string') {
-        opt.newLine = gutil.linefeed;
+        opt.newLine = "\n";
     }
 
     isUsingSourceMaps = false;
@@ -62,7 +61,7 @@ module.exports = function(opt) {
 
         // we dont do streams (yet)
         if (file.isStream()) {
-            this.emit('error', new PluginError('gulp-concat-modules', 'Streaming not supported'));
+            this.emit('error', new PluginError('gulp-concat-modules', {message:'Streaming not supported'}));
             cb();
             return;
         }
